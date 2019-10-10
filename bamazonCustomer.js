@@ -14,23 +14,6 @@ start();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ===============================FUNCTIONS============================= //
 // // Test Connection //
 // function testConnection() {
@@ -87,18 +70,22 @@ function start() {
                             if (answer1.quantity <= res[0].stock_quantity) {
                                 console.log(chalk.bold.green("ID: ") + answer1.item +
                                     (chalk.bold.yellow("\nProduct: ")) + res[0].product_name +
-                                    (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity + (chalk.bold.blue("\nPURCHASE COMPLETE! \nYou will receive an email when your items are shipped")));
+                                    (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity + 
+                                    (chalk.bold.blue("\nPURCHASE COMPLETE!" +
+                                        "\nYou will receive an email when your items are shipped")));
+                                    var updatedQuantity = res[0].stock_quantity - answer1.quantity
                                 //***NOT FUNCTIONAL*** =============== Reduce quantity entered from stock quantity ======================== //
-                                connection.query("SELECT stock_quantity - \"answer1.quantity\" FROM products WHERE item_id=1", function (err, result) {
-                                    if (err) 
+                                connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: updatedQuantity}, {item_id: answer1.item}], function (err, result) {
+                                    if (err)
                                         throw err;
+                                        
                                 })
                             }
                             // =========== If quantity ordered > stock, Console log "We only have XX in stock" =============== //
                             else {
                                 console.log(
-                                chalk.bold.yellow("\nYikes! We only have " + res[0].stock_quantity + " " + res[0].product_name + "s in stock!") + 
-                                (chalk.bold.blue("\nYou'll need to adjust your quantity")));
+                                    chalk.bold.yellow("\nYikes! We only have " + res[0].stock_quantity + " " + res[0].product_name + "s in stock!") +
+                                    (chalk.bold.blue("\nYou'll need to adjust your quantity\n")));
                                 connection.end();
                                 break;
                             }
