@@ -2,15 +2,16 @@
 -- CREATE DATABASE bamazonDB;
 USE bamazonDB;
 
+-- 		### Create table ###
+-- CREATE TABLE products (
+--     item_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+--     product_name VARCHAR(30) NOT NULL,
+--     department_name VARCHAR(20) NOT NULL,
+--     price INT(10) NOT NULL,
+--     stock_quantity INT(4)
+-- );
 
-		### Create table ###
-CREATE TABLE products (
-    item_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    product_name VARCHAR(30) NOT NULL,
-    department_name VARCHAR(20) NOT NULL,
-    price INT(10) NOT NULL,
-    stock_quantity INT(4)
-);
+
 DROP TABLE products;
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
@@ -33,5 +34,5 @@ VALUES
 
 
 SELECT * FROM products;
-SHOW TABLES;
-DESCRIBE products;
+-- SHOW TABLES;
+-- DESCRIBE products;
