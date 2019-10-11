@@ -14,8 +14,9 @@ start();
 
 
 
-// ===============================FUNCTIONS============================= //
-// // Test Connection //
+// ============================================================FUNCTIONS==================================================== //
+
+// ------------------------------------------------- Test Connection ------------------------------------------- //
 // function testConnection() {
 //     connection.query("SHOW tables", function (err, res) {
 //         if (err) {
@@ -27,7 +28,7 @@ start();
 // } connection.end()
 
 
-// Start Function //
+// ------------------------------------------ Start Function ---------------------------------------------------- //
 function start() {
     connection.query("SELECT * FROM products;", function (err, res) {
         if (err) {
@@ -47,9 +48,6 @@ function start() {
                 console.log(idArray);
             }
             console.log(chalk.bold.blue("==============================="));
-            // Create table // - SCRAPPED
-            // console.table(res); - SCRAPPED
-
 
             // Input prompt for user to select item/quantity //
             inquirer.prompt([{
@@ -66,93 +64,85 @@ function start() {
                 .then(function (answer1) {
                     switch (answer1.item) {
                         case "1":
-                            //======== If item orderes < stock quantity, console log ID, Item, Quantity, and "PURCHASE COMPLETE"
-                            if (answer1.quantity <= res[0].stock_quantity) {
-                                console.log(chalk.bold.green("ID: ") + answer1.item +
-                                    (chalk.bold.yellow("\nProduct: ")) + res[0].product_name +
-                                    (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity + 
-                                    (chalk.bold.blue("\nPURCHASE COMPLETE!" +
-                                        "\nYou will receive an email when your items are shipped")));
-                                    var updatedQuantity = res[0].stock_quantity - answer1.quantity
-                                //***NOT FUNCTIONAL*** =============== Reduce quantity entered from stock quantity ======================== //
-                                connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: updatedQuantity}, {item_id: answer1.item}], function (err, result) {
-                                    if (err)
-                                        throw err;
-                                        
-                                })
-                            }
-                            // =========== If quantity ordered > stock, Console log "We only have XX in stock" =============== //
-                            else {
-                                console.log(
-                                    chalk.bold.yellow("\nYikes! We only have " + res[0].stock_quantity + " " + res[0].product_name + "s in stock!") +
-                                    (chalk.bold.blue("\nYou'll need to adjust your quantity\n")));
-                                connection.end();
-                                break;
-                            }
-                            connection.end();
+                            var Index = res[0]
+                            purchaseItem();
                             break;
 
+                        case "2":
+                            var Index = res[1]
+                            purchaseItem();
+                            break;
 
-                        // ============= Additional Cases - NEED TO DRY UP ================
+                        case "3":
+                            var Index = res[2]
+                            purchaseItem();
+                            break;
 
-                        // case "2":
-                        //     console.log(chalk.bold.green("ID: ") + answer1.item +
-                        //         (chalk.bold.yellow("\nProduct: ")) + res[1].product_name +
-                        //         (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity);
-                        //     break;
+                        case "4":
+                            var Index = res[3]
+                            purchaseItem();
+                            break;
 
-                        // case "3":
-                        //     console.log(chalk.bold.green("ID: ") + answer1.item +
-                        //         (chalk.bold.yellow("\nProduct: ")) + res[2].product_name +
-                        //         (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity);
-                        //     break;
+                        case "5":
+                            var Index = res[4]
+                            purchaseItem();
+                            break;
 
-                        // case "4":
-                        //     console.log(chalk.bold.green("ID: ") + answer1.item +
-                        //         (chalk.bold.yellow("\nProduct: ")) + res[3].product_name +
-                        //         (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity);
-                        //     break;
+                        case "6":
+                            var Index = res[5]
+                            purchaseItem();
+                            break;
 
-                        // case "5":
-                        //     console.log(chalk.bold.green("ID: ") + answer1.item +
-                        //         (chalk.bold.yellow("\nProduct: ")) + res[4].product_name +
-                        //         (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity);
-                        //     break;
+                        case "7":
+                            var Index = res[6]
+                            purchaseItem();
+                            break;
 
-                        // case "6":
-                        //     console.log(chalk.bold.green("ID: ") + answer1.item +
-                        //         (chalk.bold.yellow("\nProduct: ")) + res[5].product_name +
-                        //         (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity);
-                        //     break;
+                        case "8":
+                            var Index = res[7]
+                            purchaseItem();
+                            break;
 
-                        // case "7":
-                        //     console.log(chalk.bold.green("ID: ") + answer1.item +
-                        //         (chalk.bold.yellow("\nProduct: ")) + res[6].product_name +
-                        //         (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity);
-                        //     break;
+                        case "9":
+                            var Index = res[8]
+                            purchaseItem();
+                            break;
 
-                        // case "8":
-                        //     console.log(chalk.bold.green("ID: ") + answer1.item +
-                        //         (chalk.bold.yellow("\nProduct: ")) + res[7].product_name +
-                        //         (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity);
-                        //     break;
+                        case "10":
+                            var Index = res[9]
+                            purchaseItem();
+                            break;
 
-                        // case "9":
-                        //     console.log(chalk.bold.green("ID: ") + answer1.item +
-                        //         (chalk.bold.yellow("\nProduct: ")) + res[8].product_name +
-                        //         (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity);
-                        //     break;
-
-                        // case "10":
-                        //     console.log(chalk.bold.green("ID: ") + answer1.item +
-                        //         (chalk.bold.yellow("\nProduct: ")) + res[9].product_name +
-                        //         (chalk.bold.yellow("\nQuantity: ")) + answer1.quantity);
-                        //     break;
                         // =============== Default if incorrect input is entered, console log message ============== //
                         default:
                             console.log((chalk.bold.yellow("Check your input! " + (chalk.bold.blue(answer1.item)) + " is not a valid ID")));
-                            connection.end();
                             break;
+                    }
+
+                    // -------PURCHASE ITEM -------------- //
+                    function purchaseItem() {
+                        var Ans = answer1;
+                        if (Ans.quantity <= Index.stock_quantity) {
+                            console.log(chalk.bold.green("\nID: ") + Ans.item +
+                                (chalk.bold.yellow("\nProduct: ")) + Index.product_name +
+                                (chalk.bold.yellow("\nQuantity: ")) + Ans.quantity +
+                                (chalk.bold.blue("\nPURCHASE COMPLETE!" +
+                                    "\nYou will receive an email when your items are shipped\n")));
+                            var updatedQuantity = Index.stock_quantity - Ans.quantity
+                            // =============== Reduce quantity entered from stock quantity ======================== //
+                            connection.query("UPDATE products SET ? WHERE ?", [{ stock_quantity: updatedQuantity }, { item_id: Ans.item }], function (err, result) {
+                                if (err)
+                                    console.log(err);
+                            })
+                            connection.end();
+                        }
+                        // =========== If quantity ordered > stock, Console log "We only have XX in stock" =============== //
+                        else {
+                            console.log(
+                                chalk.bold.yellow("\nYikes! We only have " + Index.stock_quantity + " " + Index.product_name + "s in stock!") +
+                                (chalk.bold.blue("\nYou'll need to adjust your quantity\n")));
+                            connection.end();
+                        }
                     }
                 });
         }
