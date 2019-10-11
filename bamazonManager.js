@@ -35,12 +35,10 @@ inquirer.prompt([{
                 connection.query("SELECT * FROM products WHERE stock_quantity < 51", function (err, lowInv) {
                     if (err) {
                         console.log(err);
-                        connection.end();
                     }
                     else {
                         for (var i = 0; i < lowInv.length; i++)
                             console.log(lowInv[i].product_name + ": " + lowInv[i].stock_quantity);
-                        connection.end();
                     }
                 })
                 connection.end();
