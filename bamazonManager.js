@@ -10,7 +10,32 @@ var connection = sql.createConnection({
     database: "bamazonDB"
 });
 // testConnection();
-startManager();
+inquirer.prompt([{
+    type: "list",
+    name: "choice",
+    message: "What would you like to do Mr. Bezos?",
+    choices: ["Restock", "View Low Inventory (<50)"]
+}])
+    .then(function (response) {
+        switch (response.choice) {
+            case "Restock":
+                startManager()
+                break;
+            case "View Low Inventory (<50)":
+                connection.query("SELECT * FROM products WHERE stock_quantity < 51", function(err, lowInv){
+                    if(err){
+                    console.log(err);
+                    connection.end();
+                    }
+                    else {
+                        for(var i = 0 ; i < lowInv.length; i++)
+                        console.log(lowInv[i].product_name + ": " + lowInv[i].stock_quantity);
+                        connection.end();
+                    }
+                })
+    }
+    })
+
 
 
 
@@ -48,15 +73,15 @@ function startManager() {
                 .then(function (answer) {
                     var ID = answer.ID;
                     // console.log(answer.ID)
-                    var Index = res[ID-1]
+                    var Index = res[ID - 1]
                     // console.log(Index.stock_quantity);
                     var newStock = +Index.stock_quantity + +answer.quantity;
                     connection.query("UPDATE products SET ? WHERE ?", [{ stock_quantity: newStock }, { item_id: answer.ID }], function (err, result) {
                         if (err) {
                             console.log(err);
                         } else {
-                            console.log("Way to go! You've restocked item " + answer.ID + ".\n" +
-                            "There are now " + newStock + " stocked!")
+                            console.log((chalk.bold.cyan("Way to go! You've restocked item " + (chalk.bold.magenta(answer.ID)) + ".\n" +
+                                "There are now " + (chalk.bold.magenta(newStock)) + " stocked!")))
                         }
                     })
                     connection.end();
