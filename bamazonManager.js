@@ -14,7 +14,7 @@ inquirer.prompt([{
     type: "list",
     name: "choice",
     message: "What would you like to do Mr. Bezos?",
-    choices: ["View Products for Sale", "Restock", "View Low Inventory (<50)"]
+    choices: ["View Products for Sale", "Restock", "View Low Inventory (<50)", "Add New Product"]
 }])
     .then(function (response) {
         switch (response.choice) {
@@ -43,6 +43,48 @@ inquirer.prompt([{
                         connection.end();
                     }
                 })
+                connection.end();
+                break;
+            case "Add New Product":
+                inquirer.prompt([{
+                    type: "input",
+                    name: "itemName",
+                    message: "Please enter item name"
+                },
+                {
+                    type: "input",
+                    name: "itemDept",
+                    message: "Please enter item Department"
+                },
+                {
+                    type: "input",
+                    name: "itemPrice",
+                    message: "Please enter item Price"
+                },
+                {
+                    type: "input",
+                    name: "itemQuant",
+                    message: "Please enter starting quantity"
+                }])
+                .then(function (response){
+                    var newItem = "'" + response.itemName + "', " + "'" + response.itemDept + "', " + response.itemPrice + ", " + response.itemQuant
+                    connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (" + newItem + ");", function (err,result){
+                        if(err){
+                            console.log(err);
+                            connection.end()
+                        }else {
+                            console.log("Item added!")
+                            console.log("Item: " + response.itemName +
+                            "\nDepartment: " + response.itemDept +
+                            "\nPrice: " + response.itemPrice + 
+                            "\nQuantity: " + response.itemQuant);
+                            connection.end();
+                        }
+                        })
+                    }
+                    
+                )
+
         }
     })
 
