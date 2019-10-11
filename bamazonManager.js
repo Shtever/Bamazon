@@ -14,26 +14,36 @@ inquirer.prompt([{
     type: "list",
     name: "choice",
     message: "What would you like to do Mr. Bezos?",
-    choices: ["Restock", "View Low Inventory (<50)"]
+    choices: ["View Products for Sale", "Restock", "View Low Inventory (<50)"]
 }])
     .then(function (response) {
         switch (response.choice) {
+            case "View Products for Sale":
+                connection.query("SELECT * FROM products", function (err, forSale) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.table(forSale);
+                    }
+                })
+                connection.end();
+                break;
             case "Restock":
                 startManager()
                 break;
             case "View Low Inventory (<50)":
-                connection.query("SELECT * FROM products WHERE stock_quantity < 51", function(err, lowInv){
-                    if(err){
-                    console.log(err);
-                    connection.end();
+                connection.query("SELECT * FROM products WHERE stock_quantity < 51", function (err, lowInv) {
+                    if (err) {
+                        console.log(err);
+                        connection.end();
                     }
                     else {
-                        for(var i = 0 ; i < lowInv.length; i++)
-                        console.log(lowInv[i].product_name + ": " + lowInv[i].stock_quantity);
+                        for (var i = 0; i < lowInv.length; i++)
+                            console.log(lowInv[i].product_name + ": " + lowInv[i].stock_quantity);
                         connection.end();
                     }
                 })
-    }
+        }
     })
 
 
@@ -59,7 +69,6 @@ function startManager() {
             console.log(err);
         }
         else {
-            console.table(res)
             inquirer.prompt([{
                 type: "input",
                 name: "ID",
