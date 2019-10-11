@@ -21,7 +21,7 @@ Say goodbye to big-box stores and chain supermarkets! Bamazon has the good that 
 - Connection Queries
 - And many more!
 
-## Bamazon Customer Interface ##
+# Bamazon Customer Interface #
  ## 1. **If stock quantity is available:**
 
  ![Items In Stock](./assets/BuyGood.gif)
@@ -34,7 +34,7 @@ Say goodbye to big-box stores and chain supermarkets! Bamazon has the good that 
 
 
 
-## Bamazon Manager Interface ##
+# Bamazon Manager Interface #
  ## 1. **View Products for Sale**
 
   ![Product List](./assets/ViewProd.gif)
